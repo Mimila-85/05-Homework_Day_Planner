@@ -7,7 +7,7 @@ $(document).ready(function(){
     var saveBtn = $(".saveBtn");
     
     // Take current date from moment.js.
-    var date = moment().format("dddd, MMM Do YYYY");
+    var date = moment().format("dddd, MMM Do YYYY, h:mm a");
 
     // Take current hour in the 24h format from moment.js. ParseInt to make sure we are working with numbers.
     var parseTime = parseInt(moment().format("H"));
@@ -17,10 +17,14 @@ $(document).ready(function(){
     var value = "";
     var task = "";
 
+    // Variable that stores the current day the user is using the scheduler. This variable is used at the newDay function.
     var today ="";
 
     // Display current date inside <p> tag with id #currentDay.
     currentDay.text(date);   
+
+       
+    newDay();
 
     initial();
     
@@ -36,8 +40,6 @@ $(document).ready(function(){
        $(".15").text(localStorage.getItem("15"));
        $(".16").text(localStorage.getItem("16"));
        $(".17").text(localStorage.getItem("17"));   
-
-       storeDay();
 
     }
 
@@ -88,25 +90,19 @@ $(document).ready(function(){
         });
 
     } 
-    
-    
-    // Funtion that stored the current day in local storage.    
-    function storeDay(){
-        today = moment().format("MMM Do YYYY");
-        localStorage.setItem("storeDay", today);
-    }
 
-    newDay();
     //  Function that clears the local storage once a new day is loaded.
     function newDay(){  
-
+        today = moment().format("MMM Do YYYY");
         var passDay = localStorage.getItem("storeDay");
 
         if (passDay === today){
+            localStorage.setItem("storeDay", passDay);
             initial();
         }
         else {
             localStorage.clear();
+            localStorage.setItem("storeDay", today);
         }
     }       
 });
